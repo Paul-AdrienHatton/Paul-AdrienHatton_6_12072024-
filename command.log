@@ -1,0 +1,6 @@
+
+
+composer create-project symfony/skeleton:"7.1.*" Paul-AdrienHatton_6_12072024-
+composer require webapp
+php bin/console
+php bin/console make:controller HomeController
