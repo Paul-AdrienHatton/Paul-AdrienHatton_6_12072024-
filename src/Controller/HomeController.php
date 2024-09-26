@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('/home', name: 'home')]
     public function index(Request $request): Response
     {
         // Optionnel : Si vous souhaitez afficher le nom à partir de l'URL (?name=...)

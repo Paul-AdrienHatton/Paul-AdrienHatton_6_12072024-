@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,6 +18,7 @@ class User implements UserInterface
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
@@ -25,10 +28,22 @@ class User implements UserInterface
     private ?string $username = null;
 
     #[ORM\Column]
+    #[Assert\Length(min: 6)]
     private ?string $password = null;
 
-    // Attribut pour stocker temporairement le mot de passe en clair
-    private ?string $plainPassword = null;
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $activationToken = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isActive = false;
+
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $resetToken = null;
+
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER']; // Default role for all users
+    }
 
     public function getId(): ?int
     {
@@ -49,8 +64,9 @@ class User implements UserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return $this->email; // Ensures email is used for login
     }
+
 
     public function getUsername(): ?string
     {
@@ -94,25 +110,38 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?string
+    public function getActivationToken(): ?string
     {
-        return $this->plainPassword;
+        return $this->activationToken;
     }
 
-    public function setPlainPassword(?string $plainPassword): self
+    public function setActivationToken(?string $activationToken): self
     {
-        $this->plainPassword = $plainPassword;
-
+        $this->activationToken = $activationToken;
         return $this;
     }
 
-    public function getSalt(): ?string
+    public function isActive(): bool
     {
-        return null;
+        return $this->isActive;
     }
 
-    public function eraseCredentials(): void
+    public function setIsActive(bool $isActive): self
     {
-        $this->plainPassword = null;
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function eraseCredentials(): void {}
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        return $this;
     }
 }

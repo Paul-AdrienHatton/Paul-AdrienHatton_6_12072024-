@@ -34,13 +34,7 @@ class RegistrationFormType extends AbstractType
                     new Assert\Length(['min' => 6]),
                 ],
             ])
-            ->add('confirmPassword', PasswordType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 6]),
-                ],
-            ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -49,4 +43,4 @@ class RegistrationFormType extends AbstractType
             'data_class' => User::class,
         ]);
     }
-}
+};

@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -18,7 +17,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Trouver un utilisateur par son email
+     * Find a user by their email
      *
      * @param string $email
      * @return User|null
@@ -33,7 +32,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Trouver un utilisateur par son nom d'utilisateur
+     * Find a user by their username
      *
      * @param string $username
      * @return User|null
@@ -48,7 +47,22 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupérer tous les utilisateurs ayant un certain rôle
+     * Find a user by their username or email
+     *
+     * @param string $identifier
+     * @return User|null
+     */
+    public function findOneByUsernameOrEmail(string $identifier): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :identifier OR u.email = :identifier')
+            ->setParameter('identifier', $identifier)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Get all users with a certain role
      *
      * @param string $role
      * @return User[]
@@ -57,7 +71,7 @@ class UserRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.roles LIKE :role')
-            ->setParameter('role', '%"'.$role.'"%')
+            ->setParameter('role', '%"' . $role . '"%')
             ->getQuery()
             ->getResult();
     }

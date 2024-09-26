@@ -1,0 +1,26 @@
+## User login ##
+___________________________________________________
+
+L'objectif est de permettre à un utilisateur de s'inscrire, puis de recevoir un email contenant un lien pour valider son compte avant qu'il ne soit actif.
+
+L'entité User doit inclure un token d'activation pour gérer la validation par email, ajout d'un champ isActive pour vérifier si le compte a été activé.
+
+L'activationToken permet de générer un lien unique dans l'email que l'utilisateur devra cliquer pour activer son compte. 
+Le champ isActive permet de vérifier si le compte est activé avant d'autoriser la connexion.
+
+## Migration ##
+___________________________________________________
+
+Création d'une migration :
+
+Chaque fois que vous exécutez php bin/console make:migration, Doctrine crée un nouveau fichier de migration dans le dossier migrations/. Ce fichier contient généralement des instructions SQL pour modifier la structure de la base de données (ajouter des tables, des colonnes, modifier des clés étrangères, etc.).
+Ce fichier est horodaté pour garantir que les migrations sont exécutées dans l'ordre chronologique.
+
+Exécution des migrations :
+
+Lorsque vous exécutez php bin/console doctrine:migrations:migrate, Doctrine regarde dans la table doctrine_migration_versions pour voir quelles migrations ont déjà été appliquées.
+Toutes les migrations qui n'ont pas encore été exécutées (c'est-à-dire celles qui ne sont pas dans la table doctrine_migration_versions) seront appliquées dans l'ordre.
+Migration incrémentale :
+
+Si une migration a déjà été exécutée, elle n'est pas rejouée, sauf si vous utilisez des commandes spécifiques pour rétrograder (migrate down) ou rejouer des migrations.
+Si vous avez une erreur dans une migration précédente, cette migration échouera lors de l'exécution de migrate, même si vous avez de nouvelles migrations prêtes à être appliquées.

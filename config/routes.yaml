@@ -1,5 +1,5 @@
 app_home:
-  path: /
+  path: /home
   controller: App\Controller\HomeController::index
 
 app_login:
@@ -12,6 +12,18 @@ app_register:
 
 app_logout:
   path: /logout
+
+app_activate:
+  path: /activate/{token}
+  controller: App\Controller\UserController::activate
+
+app_forgot_password:
+  path: /forgot-password
+  controller: App\Controller\UserController::forgotPassword
+
+app_reset_password:
+  path: /reset-password/{token}
+  controller: App\Controller\UserController::resetPassword
 
 app_figure:
   path: /figure/new
