@@ -1,6 +1,43 @@
+ cat (Get-PSReadlineOption).HistorySavePath (get history)
+
+php -S localhost:8000 -t public
 
 
 composer create-project symfony/skeleton:"7.1.*" Paul-AdrienHatton_6_12072024-
 composer require webapp
 php bin/console
 php bin/console make:controller HomeController
+
+use App\Entity\User;
+use App\Entity\Image;
+use App\Entity\Figure;
+use App\Entity\Video;
+use App\Entity\Comment;
+use App\Entity\Group;
+
+
+php bin/console make:entity Group
+php bin/console make:entity Figure
+php bin/console make:entity User
+php bin/console make:entity Comment
+php bin/console make:entity Media
+
+php bin/console make:fixture AppFixtures
+php bin/console doctrine:fixtures:load
+php bin/console make:controller FigureController
+
+php bin/console doctrine:database:drop --force
+
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:migrations:status
+php bin/console doctrine:migrations:version --delete --all
+php bin/console doctrine:schema:validate
+##Avant d'appliquer la migration, vous pouvez faire un test en utilisant l'option --dry-run pour voir ce que la migration ferait sans l'exécuter réellement :
+php bin/console doctrine:migrations:migrate --dry-run
+
+php bin/console doctrine:schema:update --force
+
+{ php bin/console make:auth } depreciate
+php bin/console make:security
+

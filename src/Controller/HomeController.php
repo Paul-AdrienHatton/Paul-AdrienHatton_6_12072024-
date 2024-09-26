@@ -9,11 +9,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', "home")]
-    function index(Request $request): Response
+    #[Route('/', name: 'home')]
+    public function index(Request $request): Response
     {
-        // dump();
-        dd($request);
-        return new Response('Bonjour ' . $request->query->get('name', ' inconnu'));
+        // Optionnel : Si vous souhaitez afficher le nom à partir de l'URL (?name=...)
+        $name = $request->query->get('name', 'inconnu');
+
+        // Vous pouvez utiliser 'render' pour rendre un template Twig.
+        return $this->render('home/index.html.twig', [
+            'name' => $name,
+        ]);
     }
 }
